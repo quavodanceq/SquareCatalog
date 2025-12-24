@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6448DA6F2EFC045300475C0C /* XCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 6448DA6E2EFC045300475C0C /* XCoordinator */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		6448D9DD2EFBF51B00475C0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6448DA6F2EFC045300475C0C /* XCoordinator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = SquareCatalog;
 			packageProductDependencies = (
+				6448DA6E2EFC045300475C0C /* XCoordinator */,
 			);
 			productName = SquareCatalog;
 			productReference = 6448D9C62EFBF51700475C0C /* SquareCatalog.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 6448D9BD2EFBF51700475C0C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6448DA6D2EFC045300475C0C /* XCRemoteSwiftPackageReference "XCoordinator" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6448D9C72EFBF51700475C0C /* Products */;
 			projectDirPath = "";
@@ -294,7 +303,6 @@
 				INFOPLIST_FILE = SquareCatalog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -322,7 +330,6 @@
 				INFOPLIST_FILE = SquareCatalog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -571,6 +578,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6448DA6D2EFC045300475C0C /* XCRemoteSwiftPackageReference "XCoordinator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/quickbirdstudios/XCoordinator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6448DA6E2EFC045300475C0C /* XCoordinator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6448DA6D2EFC045300475C0C /* XCRemoteSwiftPackageReference "XCoordinator" */;
+			productName = XCoordinator;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6448D9BE2EFBF51700475C0C /* Project object */;
 }
