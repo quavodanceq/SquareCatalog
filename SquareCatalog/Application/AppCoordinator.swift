@@ -9,19 +9,16 @@ import UIKit
 
 final class AppCoordinator {
     private let window: UIWindow
-    private let navigationController = UINavigationController()
-    private var reposListCoordinator: ReposListCoordinator?
+    private var rootCoordinator: ReposListCoordinator?
     
     init(window: UIWindow) {
         self.window = window
     }
     
     func start() {
-        window.rootViewController = navigationController
+        let coordinator = ReposListCoordinator()
+        self.rootCoordinator = coordinator
+        window.rootViewController = coordinator.rootViewController
         window.makeKeyAndVisible()
-        
-        let flow = ReposListCoordinator(navigationController: navigationController)
-        reposListCoordinator = flow
-        flow.start()
     }
 }
