@@ -33,6 +33,8 @@ final class RepoDetailsViewController: View<RepoDetailsState, RepoDetailsAction,
         return stackView
     }()
     
+    private let contentStackView: UIStackView = UIStackView()
+    
     private let openButton = PrimaryChevronButton(title: "Open on GitHub")
     
     private var starsRowView: InfoRowView!
@@ -41,57 +43,66 @@ final class RepoDetailsViewController: View<RepoDetailsState, RepoDetailsAction,
     private var languageRowView: InfoRowView!
     private var updatedRowView: InfoRowView!
     
+    override func update(with state: RepoDetailsState) {
+        title = state.title
+        descriptionLabel.text = (state.description?.isEmpty == false) ? state.description : "No description"
+        starsRowView.updateValue("\(state.stars)")
+        forksRowView.updateValue("\(state.forks)")
+        issuesRowView.updateValue("\(state.issues)")
+        languageRowView.updateValue(state.language ?? "—")
+        updatedRowView.updateValue(state.updatedText)
+    }
+    
     override func setupView() {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .always
-        
         starsRowView = InfoRowView(title: "Stars", value: "—")
         forksRowView = InfoRowView(title: "Forks", value: "—")
         issuesRowView = InfoRowView(title: "Open issues", value: "—")
         languageRowView = InfoRowView(title: "Language", value: "—")
         updatedRowView = InfoRowView(title: "Updated", value: "—")
-        
+        setupInfoStackView()
+        infoCardView.addSubview(infoStackView)
+        setupContentStackView()
+        setupButton()
+        setupConstraints()
+    }
+    
+    private func setupInfoStackView() {
         infoStackView.addArrangedSubview(starsRowView)
         infoStackView.addArrangedSubview(forksRowView)
         infoStackView.addArrangedSubview(issuesRowView)
         infoStackView.addArrangedSubview(languageRowView)
         infoStackView.addArrangedSubview(updatedRowView)
-        
-        infoCardView.addSubview(infoStackView)
+    }
+    
+    private func setupContentStackView() {
+        contentStackView.addArrangedSubview(descriptionLabel)
+        contentStackView.addArrangedSubview(infoCardView)
+        contentStackView.addArrangedSubview(openButton)
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 20
+        view.addSubview(contentStackView)
+    }
+    
+    private func setupButton() {
+        openButton.addTarget(self, action: #selector(openButtonTapped), for: .touchUpInside)
+    }
+    
+    private func setupConstraints() {
         infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             infoStackView.topAnchor.constraint(equalTo: infoCardView.topAnchor, constant: 16),
             infoStackView.leadingAnchor.constraint(equalTo: infoCardView.leadingAnchor, constant: 16),
             infoStackView.trailingAnchor.constraint(equalTo: infoCardView.trailingAnchor, constant: -16),
             infoStackView.bottomAnchor.constraint(equalTo: infoCardView.bottomAnchor, constant: -16),
         ])
-        
-        let contentStackView = UIStackView(arrangedSubviews: [descriptionLabel, infoCardView, openButton])
-        contentStackView.axis = .vertical
-        contentStackView.spacing = 20
-        
-        view.addSubview(contentStackView)
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             contentStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
-        
-        openButton.addTarget(self, action: #selector(openButtonTapped), for: .touchUpInside)
-    }
-    
-    override func update(with state: RepoDetailsState) {
-        title = state.title
-        descriptionLabel.text = (state.description?.isEmpty == false) ? state.description : "No description"
-        
-        starsRowView.updateValue("\(state.stars)")
-        forksRowView.updateValue("\(state.forks)")
-        issuesRowView.updateValue("\(state.issues)")
-        languageRowView.updateValue(state.language ?? "—")
-        updatedRowView.updateValue(state.updatedText)
     }
     
     @objc private func openButtonTapped() {

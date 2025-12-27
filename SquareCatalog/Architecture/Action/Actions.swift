@@ -1,8 +1,8 @@
 //
 //  Actions.swift
-//  MusicStreamingBase
+//  SquareCatalog
 //
-//  Created by Куат Оралбеков on 28.11.2025.
+//  Created by Куат Оралбеков on 24.12.2025.
 //
 
 public struct Action {

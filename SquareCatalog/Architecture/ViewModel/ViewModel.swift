@@ -1,8 +1,8 @@
 //
 //  ViewModel.swift
-//  MusicStreamingBase
+//  SquareCatalog
 //
-//  Created by Куат Оралбеков on 27.11.2025.
+//  Created by Куат Оралбеков on 24.12.2025.
 //
 
 import Foundation

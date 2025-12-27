@@ -25,17 +25,27 @@ final class InfoRowView: UIView {
         return label
     }()
     
+    private var stack: UIStackView = UIStackView()
+    
     init(title: String, value: String) {
         super.init(frame: .zero)
-        
+        setupViews(title: title, value: value)
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    private func setupViews(title: String, value: String) {
         titleLabel.text = title
         valueLabel.text = value
-        
-        let stack = UIStackView(arrangedSubviews: [titleLabel, UIView(), valueLabel])
+        self.stack.addArrangedSubview(titleLabel)
+        self.stack.addArrangedSubview(valueLabel)
         stack.axis = .horizontal
         stack.spacing = 12
         addSubview(stack)
-        
+    }
+    
+    private func setupConstraints() {
         stack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stack.topAnchor.constraint(equalTo: topAnchor),
@@ -44,8 +54,6 @@ final class InfoRowView: UIView {
             stack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
-    
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func updateValue(_ value: String) {
         valueLabel.text = value

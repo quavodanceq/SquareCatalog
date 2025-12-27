@@ -1,8 +1,8 @@
 //
 //  Coordinator.swift
-//  MusicStreamingBase
+//  SquareCatalog
 //
-//  Created by Куат Оралбеков on 03.12.2025.
+//  Created by Куат Оралбеков on 24.12.2025.
 //
 
 import XCoordinator
@@ -20,7 +20,7 @@ extension Coordinating {
         
         public func perform(to route: Route, animated: Bool, completion: Action?) {
             trigger(route, with: .init(animated: animated)) { [weak self] in
-                guard let self else {
+                guard self != nil else {
                     completion?.execute()
                     return
                 }

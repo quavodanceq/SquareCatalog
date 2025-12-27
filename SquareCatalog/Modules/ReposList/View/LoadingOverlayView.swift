@@ -21,26 +21,8 @@ final class LoadingOverlayView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         isUserInteractionEnabled = true
-
-        addSubview(blurView)
-        blurView.contentView.addSubview(loaderView)
-
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        loaderView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            blurView.topAnchor.constraint(equalTo: topAnchor),
-            blurView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            blurView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-            loaderView.centerXAnchor.constraint(equalTo: blurView.centerXAnchor),
-            loaderView.centerYAnchor.constraint(equalTo: blurView.centerYAnchor),
-
-            loaderView.widthAnchor.constraint(equalToConstant: 220),
-            loaderView.heightAnchor.constraint(equalToConstant: 120)
-        ])
-
+        setupBlurView()
+        setupConstraints()
         isHidden = true
         alpha = 0
     }
@@ -74,6 +56,28 @@ final class LoadingOverlayView: UIView {
                 finish()
             }
         }
+    }
+    
+    private func setupBlurView() {
+        addSubview(blurView)
+        blurView.contentView.addSubview(loaderView)
+    }
+    
+    private func setupConstraints() {
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        loaderView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            loaderView.centerXAnchor.constraint(equalTo: blurView.centerXAnchor),
+            loaderView.centerYAnchor.constraint(equalTo: blurView.centerYAnchor),
+            
+            loaderView.widthAnchor.constraint(equalToConstant: 220),
+            loaderView.heightAnchor.constraint(equalToConstant: 120)
+        ])
     }
 }
 

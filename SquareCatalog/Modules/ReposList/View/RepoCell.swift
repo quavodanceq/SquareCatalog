@@ -152,76 +152,7 @@ final class RepoCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        selectionStyle = .none
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
-        
-        contentView.addSubview(cardView)
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-        ])
-        
-        languageStackView.addArrangedSubview(languageIconImageView)
-        languageStackView.addArrangedSubview(languageLabel)
-        
-        languageIconImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            languageIconImageView.widthAnchor.constraint(equalToConstant: 16),
-            languageIconImageView.heightAnchor.constraint(equalToConstant: 16)
-        ])
-        
-        languageBadgeView.addSubview(languageStackView)
-        languageStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            languageStackView.topAnchor.constraint(equalTo: languageBadgeView.topAnchor, constant: 6),
-            languageStackView.leadingAnchor.constraint(equalTo: languageBadgeView.leadingAnchor, constant: 8),
-            languageStackView.trailingAnchor.constraint(equalTo: languageBadgeView.trailingAnchor, constant: -8),
-            languageStackView.bottomAnchor.constraint(equalTo: languageBadgeView.bottomAnchor, constant: -6),
-        ])
-        
-        nameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        languageBadgeView.setContentHuggingPriority(.required, for: .horizontal)
-        
-        topRowStackView.addArrangedSubview(nameLabel)
-        
-        let spacerView = UIView()
-        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        topRowStackView.addArrangedSubview(spacerView)
-        
-        topRowStackView.addArrangedSubview(languageBadgeView)
-        
-        starsStackView.addArrangedSubview(starsIconImageView)
-        starsStackView.addArrangedSubview(starsLabel)
-        
-        forksStackView.addArrangedSubview(forksIconImageView)
-        forksStackView.addArrangedSubview(forksLabel)
-        
-        statsStackView.addArrangedSubview(starsStackView)
-        statsStackView.addArrangedSubview(forksStackView)
-        
-        contentStackView.addArrangedSubview(topRowStackView)
-        contentStackView.addArrangedSubview(descriptionLabel)
-        contentStackView.addArrangedSubview(statsStackView)
-
-        contentStackView.setCustomSpacing(titleToDescriptionSpacing, after: topRowStackView)
-        
-        cardView.addSubview(contentStackView)
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
-            contentStackView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 14),
-            contentStackView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -14),
-            contentStackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -14),
-        ])
-        
-        languageBadgeView.isHidden = true
+        setupViews()
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -283,8 +214,6 @@ final class RepoCell: UITableViewCell {
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority
     ) -> CGSize {
-        // Ensure our dynamic spacing is applied BEFORE UITableView asks Auto Layout for the final height.
-        // Otherwise some cells can get clipped until the next layout pass (e.g. after scrolling).
         let totalHorizontalInsets: CGFloat = 16 + 16 + 14 + 14
         let availableWidth = max(0, targetSize.width - totalHorizontalInsets)
         updateAdaptiveSpacing(availableWidth: availableWidth)
@@ -297,14 +226,12 @@ final class RepoCell: UITableViewCell {
 
     private func updateAdaptiveSpacing(availableWidth: CGFloat) {
         guard availableWidth > 0 else { return }
-
         let text = descriptionLabel.text ?? ""
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else {
             contentStackView.setCustomSpacing(oneLineDescriptionToStatsSpacing, after: descriptionLabel)
             return
         }
-
         let singleLineHeight = descriptionLabel.font.lineHeight
         let boundingRect = (trimmedText as NSString).boundingRect(
             with: CGSize(width: availableWidth, height: .greatestFiniteMagnitude),
@@ -312,7 +239,6 @@ final class RepoCell: UITableViewCell {
             attributes: [.font: descriptionLabel.font as Any],
             context: nil
         )
-
         let isMultiline = boundingRect.height > (singleLineHeight * 1.2)
         let spacing = isMultiline ? twoLineDescriptionToStatsSpacing : oneLineDescriptionToStatsSpacing
         contentStackView.setCustomSpacing(spacing, after: descriptionLabel)
@@ -342,5 +268,80 @@ final class RepoCell: UITableViewCell {
         } else {
             return "\(value)"
         }
+    }
+    
+    private func setupViews() {
+        selectionStyle = .none
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        contentView.addSubview(cardView)
+        setupLanguageViews()
+        setupNameLabel()
+        setupTopRowStack()
+        setupStack()
+        languageBadgeView.isHidden = true
+        setupConstraints()
+    }
+    
+    private func setupLanguageViews() {
+        languageStackView.addArrangedSubview(languageIconImageView)
+        languageStackView.addArrangedSubview(languageLabel)
+        languageBadgeView.addSubview(languageStackView)
+        languageBadgeView.setContentHuggingPriority(.required, for: .horizontal)
+    }
+    
+    private func setupNameLabel() {
+        nameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    }
+    
+    private func setupTopRowStack() {
+        topRowStackView.addArrangedSubview(nameLabel)
+        let spacerView = UIView()
+        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        topRowStackView.addArrangedSubview(spacerView)
+        topRowStackView.addArrangedSubview(languageBadgeView)
+    }
+    
+    private func setupStack() {
+        starsStackView.addArrangedSubview(starsIconImageView)
+        starsStackView.addArrangedSubview(starsLabel)
+        forksStackView.addArrangedSubview(forksIconImageView)
+        forksStackView.addArrangedSubview(forksLabel)
+        statsStackView.addArrangedSubview(starsStackView)
+        statsStackView.addArrangedSubview(forksStackView)
+        contentStackView.addArrangedSubview(topRowStackView)
+        contentStackView.addArrangedSubview(descriptionLabel)
+        contentStackView.addArrangedSubview(statsStackView)
+        contentStackView.setCustomSpacing(titleToDescriptionSpacing, after: topRowStackView)
+        cardView.addSubview(contentStackView)
+    }
+    
+    private func setupConstraints() {
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+        ])
+        languageIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            languageIconImageView.widthAnchor.constraint(equalToConstant: 16),
+            languageIconImageView.heightAnchor.constraint(equalToConstant: 16)
+        ])
+        languageStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            languageStackView.topAnchor.constraint(equalTo: languageBadgeView.topAnchor, constant: 6),
+            languageStackView.leadingAnchor.constraint(equalTo: languageBadgeView.leadingAnchor, constant: 8),
+            languageStackView.trailingAnchor.constraint(equalTo: languageBadgeView.trailingAnchor, constant: -8),
+            languageStackView.bottomAnchor.constraint(equalTo: languageBadgeView.bottomAnchor, constant: -6),
+        ])
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
+            contentStackView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 14),
+            contentStackView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -14),
+            contentStackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -14),
+        ])
     }
 }

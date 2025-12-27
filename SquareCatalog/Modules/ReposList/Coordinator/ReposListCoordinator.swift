@@ -31,7 +31,7 @@ final class ReposListCoordinator: Coordinating.Navigation<ReposListRoute, Void> 
                     self.perform(to: .details(repo), animated: true, completion: nil)
                 }
             }
-            return .set([listBuilder.make()], completion: .nop)
+            return .set([listBuilder.make()])
         case .details(let repo):
             detailsBuilder.register { [weak self] segue in
                 guard let self else { return }

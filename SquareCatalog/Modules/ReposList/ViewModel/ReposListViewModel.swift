@@ -42,7 +42,6 @@ class ReposListViewModel: ViewModelInterface<RepoListState, RepoListAction, Repo
                     }
                 }
             }
-            
         case .refresh:
             updateState { state in
                 state.isLoading = true
@@ -65,11 +64,8 @@ class ReposListViewModel: ViewModelInterface<RepoListState, RepoListAction, Repo
                     }
                 }
             }
-
         default :
             break
         }
     }
-    
-    
 }

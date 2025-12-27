@@ -1,8 +1,8 @@
 //
 //  Coordinator.swift
-//  MusicStreamingBase
+//  SquareCatalog
 //
-//  Created by Куат Оралбеков on 28.11.2025.
+//  Created by Куат Оралбеков on 24.12.2025.
 //
 
 import Foundation
@@ -30,30 +30,5 @@ public extension CoordinatorType {
     func setRoot(window: UIWindow) {
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
-    }
-}
-
-extension Coordinating{
-    
-    public enum HashState {
-        case parent(Int)
-        case child(parent: Int, initial: Int)
-        
-        public var lastHash: Int {
-            switch self {
-            case let .parent(hash):
-                return hash
-            case let .child(_, hash):
-                return hash
-            }
-        }
-    }
-    
-    public protocol ChildCoordinator: Presentable {
-        var id: String { get }
-        var stillInStack: Bool { get }
-        func setupHashState()
-        func observeTransitions(_ result: Action)
-        func performInitialRoutesIfNeeded(_ result: Action)
     }
 }

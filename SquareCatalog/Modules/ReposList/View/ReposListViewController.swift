@@ -40,7 +40,6 @@ class ReposListViewController: View<RepoListState, RepoListAction, RepoListSegue
     override func update(with state: RepoListState) {
         loadingOverlay.setLoading(state.isLoading || state.isRefreshing)
 
-        // Avoid UI jank: don't reload the whole table on every state change (loading flags, etc).
         if state.repos != previousRepos {
             previousRepos = state.repos
             tableView.reloadData()
@@ -74,7 +73,6 @@ class ReposListViewController: View<RepoListState, RepoListAction, RepoListSegue
     }
 
     @objc private func refreshControlValueChanged() {
-        // We still use the pull gesture, but show our custom loader instead of the system spinner.
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
         }
@@ -101,8 +99,6 @@ class ReposListViewController: View<RepoListState, RepoListAction, RepoListSegue
             loadingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
-
-
 }
 
 extension ReposListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -125,6 +121,5 @@ extension ReposListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let repo = state?.repos[indexPath.row] else { return }
         viewModel?.routing(.details(repo))
     }
-    
 }
 

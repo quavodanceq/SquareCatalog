@@ -13,7 +13,6 @@ final class RepoDetailsViewModel: ViewModelInterface<RepoDetailsState, RepoDetai
         let df = DateFormatter()
         df.dateStyle = .medium
         df.timeStyle = .none
-        
         let state = RepoDetailsState(
             title: repo.name,
             description: repo.description,
