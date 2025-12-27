@@ -1,3 +1,10 @@
+//
+//  GitHubEndpoint.swift
+//  SquareCatalog
+//
+//  Created by Куат Оралбеков on 27.12.2025.
+//
+
 import Foundation
 
 enum GitHubEndpoint {

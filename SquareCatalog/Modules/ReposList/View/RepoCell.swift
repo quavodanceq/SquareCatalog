@@ -16,12 +16,10 @@ final class RepoCell: UITableViewCell {
         view.backgroundColor = .secondarySystemBackground
         view.layer.cornerRadius = 16
         view.layer.cornerCurve = .continuous
-        
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.06
         view.layer.shadowRadius = 12
         view.layer.shadowOffset = CGSize(width: 0, height: 6)
-        
         return view
     }()
     

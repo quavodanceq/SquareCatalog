@@ -35,7 +35,6 @@ final class LoaderView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layoutLetters()
         layoutLoaderLayers()
     }
     
@@ -62,10 +61,7 @@ final class LoaderView: UIView {
             letterLabels.append(label)
         }
     }
-    
-    private func layoutLetters() {
-    }
-    
+
     private func setupLoaderLayers() {
         layer.insertSublayer(stripesContainer, below: stack.layer)
         stripesContainer.mask = stripesMask
@@ -108,7 +104,6 @@ final class LoaderView: UIView {
         let outerRadius = side * 0.48
         let innerRadius = side * 0.20
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        
         let path = UIBezierPath()
         path.append(UIBezierPath(arcCenter: center, radius: outerRadius, startAngle: 0, endAngle: .pi * 2, clockwise: true))
         path.append(UIBezierPath(arcCenter: center, radius: innerRadius, startAngle: 0, endAngle: .pi * 2, clockwise: true))
@@ -132,11 +127,9 @@ final class LoaderView: UIView {
                     options: [.drawsAfterEndLocation]
                 )
             }
-            
             let w = size.width
             let h = size.height
             let base = min(w, h)
-            
             radial(center: CGPoint(x: w * 0.50, y: h * 0.50), color: .yellow, radius: base * 0.50)
             radial(center: CGPoint(x: w * 0.45, y: h * 0.45), color: .red, radius: base * 0.45)
             radial(center: CGPoint(x: w * 0.55, y: h * 0.55), color: .cyan, radius: base * 0.45)
@@ -153,7 +146,6 @@ final class LoaderView: UIView {
         layoutIfNeeded()
         afterLayer.removeAllAnimations()
         afterLayer.opacity = 1
-        
         let amplitude = afterLayer.bounds.width * 0.55
         let move = CABasicAnimation(keyPath: "transform.translation.x")
         move.fromValue = -amplitude
@@ -162,20 +154,17 @@ final class LoaderView: UIView {
         move.autoreverses = true
         move.repeatCount = .infinity
         move.timingFunction = CAMediaTimingFunction(controlPoints: 0.6, 0.8, 0.5, 1)
-        
         let fade = CAKeyframeAnimation(keyPath: "opacity")
         fade.values = [0, 1, 0, 0]
         fade.keyTimes = [0, 0.15, 0.65, 1]
         fade.duration = opacityDuration
         fade.repeatCount = .infinity
-        
         let group = CAAnimationGroup()
         group.animations = [move, fade]
         group.duration = opacityDuration
         group.repeatCount = .infinity
         group.timingFunction = CAMediaTimingFunction(controlPoints: 0.6, 0.8, 0.5, 1)
         afterLayer.add(group, forKey: "loader.after")
-        
         let baseTime = CACurrentMediaTime()
         let cycleDuration = lettersDuration
         let delays: [CFTimeInterval] = [
@@ -184,7 +173,6 @@ final class LoaderView: UIView {
         for (idx, label) in letterLabels.enumerated() {
             label.layer.removeAllAnimations()
             label.alpha = 0
-            
             let opacity = CAKeyframeAnimation(keyPath: "opacity")
             opacity.values = [0, 1, 0.2, 0]
             opacity.keyTimes = [0, 0.05, 0.2, 1]
@@ -205,7 +193,6 @@ final class LoaderView: UIView {
             transform.repeatCount = .infinity
             transform.beginTime = opacity.beginTime
             transform.isRemovedOnCompletion = false
-            
             let shadow = CAKeyframeAnimation(keyPath: "shadowOpacity")
             shadow.values = [0, 1, 0, 0]
             shadow.keyTimes = [0, 0.05, 0.2, 1]
@@ -213,11 +200,9 @@ final class LoaderView: UIView {
             shadow.repeatCount = .infinity
             shadow.beginTime = opacity.beginTime
             shadow.isRemovedOnCompletion = false
-            
             label.layer.shadowColor = UIColor.black.cgColor
             label.layer.shadowRadius = 6
             label.layer.shadowOffset = .zero
-            
             label.layer.add(opacity, forKey: "letter.opacity.\(idx)")
             label.layer.add(transform, forKey: "letter.transform.\(idx)")
             label.layer.add(shadow, forKey: "letter.shadow.\(idx)")
